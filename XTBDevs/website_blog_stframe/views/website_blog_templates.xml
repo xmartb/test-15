@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ======   Template: Podcast    ==========================================
+============================================================================ -->
+    <template id="podcast_iframe_template">
+        <div t-if="blog_post.iframe_stream" t-attf-class="o_not_editable align-items-center position-relative #{additionnal_classes or ''}">
+            <iframe t-attf-src="{{blog_post.iframe_stream}}"
+                    width="100%"
+                    t-attf-height="{{blog_post.iframe_stream_height}}px"
+                    frameborder="0"/>
+        </div>
+    </template>
+
+     <!-- Podcast mini -->
+    <template id="podcast_mini_iframe_template">
+        <div t-if="blog_post.iframe_stream" t-attf-class="o_not_editable align-items-center position-relative #{additionnal_classes or ''}">
+            <iframe t-attf-src="{{blog_post.iframe_stream_mini}}"
+                    width="100%"
+                    t-attf-height="{{blog_post.iframe_stream_mini_height}}px"
+                    frameborder="0"/>
+        </div>
+    </template>
+
+    <!-- Podcast side -->
+    <template id="podcast_side_iframe_template">
+        <div t-if="blog_post.iframe_stream" t-attf-class="o_not_editable align-items-center position-relative #{additionnal_classes or ''}">
+            <iframe t-attf-src="{{blog_post.iframe_stream_side}}"
+                    width="100%"
+                    t-attf-height="{{blog_post.iframe_stream_side_height}}px"
+                    frameborder="0"/>
+        </div>
+    </template>
+
+
+    <!-- (Option) Post Sidebar: Podcast -->
+    <template id="opt_blog_post_podcast" name="Podcast" inherit_id="website_blog.blog_post_sidebar" active="True" customize_show="True" priority="2">
+        <xpath expr="//div[@id='o_wblog_post_sidebar']" position="inside">
+            <div t-if="blog_post.iframe_stream" class="o_wblog_sidebar_block pb-5">
+                <h6 class="text-uppercase pb-3 mb-4 border-bottom font-weight-bold">Podcast</h6>
+
+                <div class="o_wblog_social_links d-flex flex-wrap mx-n1">
+                    <t t-set="classes">bg-100 border mx-1 mb-2 rounded-circle d-flex align-items-center justify-content-center text-decoration-none</t>
+
+                    <t t-call="website_blog_stframe.podcast_side_iframe_template">
+                        <t t-set="additionnal_classes" t-value="'o_wblog_post_list_author o_list_cover d-flex text-white w-100 o_not_editable ' + ('p-3 h5 m-0' if opt_blog_list_view else 'px-2 pb-2 pt-3') "/>
+                    </t>
+
+                </div>
+            </div>
+
+            <div class="oe_structure" id="oe_structure_blog_post_sidebar_down_podcast"/>
+        </xpath>
+    </template>
+
+    <!-- Post Sidebar: Download Podcast -->
+
+    <template id="opt_blog_post_download_podcast" name="Descargar Podcast" inherit_id="website_blog.blog_post_sidebar" active="True" customize_show="True" priority="2">
+        <xpath expr="//div[@id='o_wblog_post_sidebar']" position="inside">
+            <div t-if="blog_post.download_stream" class="o_wblog_sidebar_block pb-5">
+                <div class="o_wblog_social_links d-flex flex-wrap mx-n1">
+                    <t t-set="classes">bg-100 border mx-1 mb-2 rounded-circle d-flex align-items-center justify-content-center text-decoration-none</t>
+                    <div class="col-lg-12">
+                      <div class="s_btn text-center pt16 pb16" data-name="Button">
+                        <a t-attf-href="{{blog_post.download_stream}}"
+                           class="btn btn-primary"
+                           data-original-title="" title="{{blog_post.name}}">
+                          <font data-original-title="" title="" >Descargar Podcast</font>
+                        </a>
+                      </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="oe_structure" id="oe_structure_blog_post_sidebar_3"/>
+        </xpath>
+    </template>
+
+
+
+    <!-- Podcast content -->
+    <template id="blog_post_content_stream" name="Podcast" priority="1" inherit_id="website_blog.blog_post_content" active="True" customize_show="True">
+        <xpath expr="//div[@t-field='blog_post.content']" position="before">
+            <t t-call="website_blog_stframe.podcast_iframe_template">
+                <t t-set="additionnal_classes" t-value="'o_wblog_post_list_author o_list_cover d-flex text-white w-100 o_not_editable ' + ('p-3 h5 m-0' if opt_blog_list_view else 'px-2 pb-2 pt-3') "/>
+            </t>
+        </xpath>
+    </template>
+
+
+    <!-- (Option) Posts List: Show Podcast -->
+    <template id="opt_posts_loop_show_podcast" name="Podcast" inherit_id="website_blog.posts_loop" active="True" customize_show="True"/>
+
+
+    <!-- Podcast mini -->
+    <template id="posts_loop_stream"  inherit_id="website_blog.posts_loop" customize_show="False">
+        <xpath expr="//t[@t-set='opt_posts_loop_show_teaser']" position="after">
+            <t t-set="opt_posts_loop_show_podcast" t-value="request.website.viewref('website_blog_stframe.opt_posts_loop_show_podcast').active"/>
+        </xpath>
+
+        <!-- List-View Design -->
+        <xpath expr="//t[@t-if='opt_blog_list_view']//div[@t-if='opt_posts_loop_show_teaser']" position="after">
+            <div t-if="opt_posts_loop_show_podcast" t-att-class="opt_blog_cards_design and 'card-body pt-0'">
+                <t t-call="website_blog_stframe.podcast_iframe_template">
+                    <t t-set="additionnal_classes" t-value="'o_wblog_post_list_author o_list_cover d-flex text-white w-100 o_not_editable ' + ('p-3 h5 m-0' if opt_blog_list_view else 'px-2 pb-2 pt-3') "/>
+                </t>
+            </div>
+        </xpath>
+
+        <!-- Grid-View Design -->
+        <xpath expr="//t[@t-if='not opt_blog_list_view']//div[@t-if='opt_posts_loop_show_teaser']" position="after">
+            <div t-if="opt_posts_loop_show_podcast">
+                <t t-call="website_blog_stframe.podcast_iframe_template">
+                    <t t-set="additionnal_classes" t-value="'o_wblog_post_list_author o_list_cover d-flex text-white w-100 o_not_editable ' + ('p-3 h5 m-0' if opt_blog_list_view else 'px-2 pb-2 pt-3') "/>
+                </t>
+            </div>
+        </xpath>
+
+    </template>
+
+
+</odoo>

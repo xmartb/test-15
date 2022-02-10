@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="view_blog_post_form" model="ir.ui.view">
+            <field name="name">blog.post.form</field>
+            <field name="model">blog.post</field>
+            <field name="inherit_id" ref="website_blog.view_blog_post_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//notebook" position="inside">
+                    <page name="stream" string="Podcast">
+                        <group name="iframe_podcast">
+                                <field name="iframe_stream" widget="text"/>
+                                <field name="iframe_stream_height"/>
+                                <field name="iframe_stream_mini" widget="text"/>
+                                <field name="iframe_stream_mini_height"/>
+                                <field name="iframe_stream_side" widget="text"/>
+                                <field name="iframe_stream_side_height"/>
+                                <field name="download_stream" widget="text"/>
+                            </group>
+                    </page>
+                </xpath>
+
+            </field>
+        </record>
+
+</odoo>
